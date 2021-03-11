@@ -2,7 +2,7 @@
 
 Shader "Custom/Reticle"
 {
-	Properties
+    Properties
 	{
 		[PerRendererData] _MainTex ("Font Texture", 2D) = "white" {}
 

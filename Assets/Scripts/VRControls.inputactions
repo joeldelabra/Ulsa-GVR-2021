@@ -1,0 +1,44 @@
+{
+    "name": "VRControls",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "b6887b06-ecc1-4e92-af2b-f40e0d69d182",
+            "actions": [
+                {
+                    "name": "VRClic",
+                    "type": "Button",
+                    "id": "4af0be89-d6a2-49f5-8ea6-a71aa779ae43",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dff1d80b-2d1c-455f-bd6b-534e693e18c2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VRClic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c21434a7-3401-4f4a-96f6-1b57ad147502",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VRClic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -4,55 +4,71 @@ using UnityEngine;
 
 public class VRCamera : MonoBehaviour
 {
+  [SerializeField]
+  Color rayColor = Color.green;
+  [SerializeField, Range(0.1f, 100f)]
+  float rayDistance = 5f;
+  [SerializeField]
+  LayerMask rayLayerDetection;
+  RaycastHit hit;
+  [SerializeField]
+  Transform reticleTrs;
 
-    [SerializeField]
-    Color rayColor = Color.magenta;
+  [SerializeField]
+  Vector3 initialScale;
 
-    [SerializeField, Range(0.1f, 100f)]
-    float rayDistance = 5f;
+  bool objectTouched;
 
-    [SerializeField]
-    LayerMask rayLayerDetection;
+  VRControls vrcontrols;
 
-    RaycastHit hit;
+  Target target;
 
-    [SerializeField]
-    Transform reticleTrs;
+  void Awake()
+  {
+    vrcontrols = new VRControls();
+  }
 
-    [SerializeField]
-    Vector3 initialScale;
+  void OnEnable()
+  {
+    vrcontrols.Enable();
+  }
 
-    bool objectTouched;
+  void OnDisable()
+  {
+    vrcontrols.Disable();
+  }
 
+  void Start()
+  {
+      reticleTrs.localScale = initialScale;
+      vrcontrols.Gameplay.VRClic.performed += _=> ClickOverObject();
+  }
 
-    void Update()
+  void ClickOverObject() => target?.HandleColor();
+
+  void FixedUpdate()
+  {
+    if(Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, rayLayerDetection))
     {
-        if(Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, rayLayerDetection))
-        {
-
-            if(!objectTouched) objectTouched = true;
-            if(!reticleTrs) return;
-            reticleTrs.position = hit.point;
-            reticleTrs.localScale = initialScale * hit.distance;
-            //reticleTrs.LookAt(hit.normal);
-
-        } else {
-
-            if(objectTouched){
-                
-                objectTouched = false;
-                reticleTrs.localScale = initialScale;
-                reticleTrs.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-            
-            }
-        }
-
+      target = hit.collider.GetComponent<Target>();
+      //target.HandleColor();
+      reticleTrs.position = hit.point;
+      reticleTrs.localScale = initialScale * hit.distance;
+      reticleTrs.localRotation = Quaternion.LookRotation(hit.normal);
     }
-
-    void OnDrawGizmosSelected() 
+    else
     {
-        Gizmos.color = rayColor;
-        Gizmos.DrawRay(transform.position, transform.forward * rayDistance);
+      //target ??= null;
+      if(target) target = null;
+      reticleTrs.localScale = initialScale;
+      reticleTrs.localPosition = new Vector3(0, 0, 1);
+      reticleTrs.localRotation = Quaternion.identity;
     }
+  }
 
+  void OnDrawGizmosSelected()
+  {
+    Gizmos.color = rayColor;
+    Gizmos.DrawRay(transform.position, transform.forward * rayDistance);
+  }
 }
