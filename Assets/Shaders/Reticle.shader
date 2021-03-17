@@ -2,7 +2,7 @@
 
 Shader "Custom/Reticle"
 {
-    Properties
+	Properties
 	{
 		[PerRendererData] _MainTex ("Font Texture", 2D) = "white" {}
 
@@ -16,7 +16,7 @@ Shader "Custom/Reticle"
 
 		_ColorMask ("Color Mask", Float) = 15
 	}
-	
+
 	SubShader
 	{
 		LOD 100
@@ -34,11 +34,11 @@ Shader "Custom/Reticle"
 		{
 			Ref [_Stencil]
 			Comp [_StencilComp]
-			Pass [_StencilOp] 
+			Pass [_StencilOp]
 			ReadMask [_StencilReadMask]
 			WriteMask [_StencilWriteMask]
 		}
-		
+
 		Cull Off
 		Lighting Off
 		ZWrite Off
@@ -61,19 +61,19 @@ Shader "Custom/Reticle"
 					float2 texcoord : TEXCOORD0;
 					float4 color : COLOR;
 				};
-	
+
 				struct v2f
 				{
 					float4 vertex : SV_POSITION;
 					half2 texcoord : TEXCOORD0;
 					fixed4 color : COLOR;
 				};
-	
+
 				sampler2D _MainTex;
 				float4 _MainTex_ST;
 				fixed4 _Color;
 				fixed4 _TextureSampleAdd;
-				
+
 				v2f vert (appdata_t v)
 				{
 					v2f o;
@@ -86,7 +86,7 @@ Shader "Custom/Reticle"
 
 					return o;
 				}
-				
+
 				fixed4 frag (v2f i) : SV_Target
 				{
 					fixed4 col = (tex2D(_MainTex, i.texcoord) + _TextureSampleAdd) * i.color;

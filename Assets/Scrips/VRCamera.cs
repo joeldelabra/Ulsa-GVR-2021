@@ -19,25 +19,62 @@ public class VRCamera : MonoBehaviour
 
   bool objectTouched;
 
+  VRControls vrcontrols;
+
+  Target target;
+
+  void Awake()
+  {
+    vrcontrols = new VRControls();
+  }
+
+  void OnEnable()
+  {
+    vrcontrols.Enable();
+  }
+
+  void OnDisable()
+  {
+    vrcontrols.Disable();
+  }
+
   void Start()
   {
       reticleTrs.localScale = initialScale;
+      vrcontrols.Gameplay.VRClick.performed += _=> ClickOverObject();
+  }
+
+  void ClickOverObject()
+  {
+    Debug.Log(target?.gameObject.layer);
+    switch(target?.gameObject.layer)
+      {
+        case 8:
+          target?.handleClick();
+          //target.HandleColor();
+          break;
+        case 9:
+          Debug.Log("click");
+          target?.HandleTextInteraction();
+          break;
+      }
   }
 
   void FixedUpdate()
   {
     if(Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, rayLayerDetection))
     {
-      Target target = hit.collider.GetComponent<Target>();
-      target.HandleColor();
+      target = hit.collider.GetComponent<Target>();
       reticleTrs.position = hit.point;
       reticleTrs.localScale = initialScale * hit.distance;
       reticleTrs.localRotation = Quaternion.LookRotation(hit.normal);
     }
     else
     {
+      //target ??= null;
+      if(target) target = null;
       reticleTrs.localScale = initialScale;
-      reticleTrs.localPosition = Vector3.zero + new Vector3(0, 0, 1);
+      reticleTrs.localPosition = new Vector3(0, 0, 1);
       reticleTrs.localRotation = Quaternion.identity;
     }
   }

@@ -8,6 +8,8 @@ public class Target : MonoBehaviour
   Color catchColor = Color.cyan;
 
   Renderer render;
+  [SerializeField]
+  GameObject textInteraction;
 
   void Awake()
   {
@@ -15,4 +17,12 @@ public class Target : MonoBehaviour
   }
 
   public void HandleColor() => render.material.color = catchColor;
+
+  public void HandleTextInteraction() =>  textInteraction?.SetActive(!textInteraction.activeSelf);
+
+  public void handleClick()
+  {
+    HandleColor();
+    HandleTextInteraction();
+  }
 }
